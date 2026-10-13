@@ -1,7 +1,7 @@
 {
   "timingMeasuredAt": "2026-10-13T09:55:37.806Z",
   "runner": "Depot depot-ubuntu-24.04 GitHub Actions runner (2 CPUs, 8 GB RAM, 100 GB disk, 2 GB disk accelerator)",
-  "frameworkVersion": "7.3.5",
+  "frameworkVersion": "7.3.8",
   "clientSideRenderedTests": {
     "firstPaintMs": 96.4,
     "fcpMs": 96.28,
@@ -636,7 +636,7 @@
     "dependencies": {
       "@astrojs/node": "11.1.6",
       "@astrojs/react": "7.0.0",
-      "astro": "7.3.5",
+      "astro": "7.3.8",
       "react": "19.3.0",
       "react-dom": "19.3.0"
     },
