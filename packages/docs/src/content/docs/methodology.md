@@ -365,10 +365,12 @@ Current pinned dependencies are listed in each project's `package.json`:
   Runtime routes keep the default full hydration so server output includes the
   client bootstrap rather than measuring a no-hydration optimization.
 - Next.js's starter and runtime app enable Cache Components and Partial
-  Prefetching, following the CLI defaults. Runtime data routes call `connection()`
-  before loading the shared UUID fixture, so the table is loaded and rendered
-  on every request without `use cache`. A Suspense boundary with an empty
-  fallback allows normal streaming without painting a loading placeholder.
+  Prefetching, following the CLI defaults. Runtime data routes directly await
+  the shared asynchronous UUID fixture, with no `connection()` call or deferred
+  import. UUID rows are created once per module instance, while the table is
+  loaded and rendered on every request without `use cache`. A Suspense boundary
+  with an empty fallback allows normal streaming without painting a loading
+  placeholder.
 
 ### Client Side Rendered Tests
 
