@@ -2,6 +2,7 @@
   "timingMeasuredAt": "2026-10-19T11:57:07.820Z",
   "runner": "Depot depot-ubuntu-24.04 GitHub Actions runner (2 CPUs, 8 GB RAM, 100 GB disk, 2 GB disk accelerator)",
   "frameworkVersion": "0.18.0",
+  "releasedAt": "2026-09-18T04:48:10.373Z",
   "ssrRequestThroughputTests": {
     "opsPerSec": 590,
     "avgLatencyMs": 1.771,

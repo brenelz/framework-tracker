@@ -2,6 +2,7 @@ import { mergeSSRLoadArtifact } from './ssrLoad/merge.ts'
 import { join } from 'node:path'
 import { getFrameworks } from './get-frameworks.ts'
 import { packagesDir } from './constants.ts'
+import { getPublishTimes, withReleasedAt } from './release-dates.ts'
 import {
   getDependencyCountsFromPackageMetadata,
   getDependencyStatsFromE18e,
@@ -22,6 +23,35 @@ import type {
   FirstPartyDependencyStats,
   E18eStats,
 } from './types.ts'
+
+const publishTimesCache = new Map<string, Promise<Record<string, string>>>()
+
+async function getReleasedAt(
+  frameworkPackage: string,
+  frameworkVersion: string | undefined,
+): Promise<string | undefined> {
+  if (!frameworkVersion || frameworkVersion === 'unknown') return undefined
+
+  try {
+    if (!publishTimesCache.has(frameworkPackage)) {
+      publishTimesCache.set(frameworkPackage, getPublishTimes(frameworkPackage))
+    }
+    const releasedAt = (await publishTimesCache.get(frameworkPackage)!)[
+      frameworkVersion
+    ]
+    if (releasedAt == null) {
+      console.warn(
+        `No publish time found for ${frameworkPackage}@${frameworkVersion}`,
+      )
+    }
+    return releasedAt
+  } catch (error) {
+    throw new Error(
+      `Failed to fetch publish time for ${frameworkPackage}@${frameworkVersion}`,
+      { cause: error },
+    )
+  }
+}
 
 async function main() {
   const artifactsDir = process.argv[2] || 'artifacts'
@@ -232,10 +262,20 @@ async function main() {
         console.warn(`No e18e stats artifact found at ${e18eArtifactPath}`)
       }
 
-      stats = {
-        ...stats,
-        packageJson: getPackageJsonDeps(packageName),
-      }
+      // check for releasedAt, if not fetch from repository
+      const releasedAt =
+        existingStats?.frameworkVersion === frameworkVersion &&
+        existingStats?.releasedAt
+          ? existingStats?.releasedAt
+          : await getReleasedAt(framework.frameworkPackage, frameworkVersion)
+
+      stats = withReleasedAt(
+        {
+          ...stats,
+          packageJson: getPackageJsonDeps(packageName),
+        },
+        releasedAt,
+      )
 
       // Save to ci-stats.json
       const ciStatsPath = join(packagesDir, packageName, 'ci-stats.json')
@@ -407,10 +447,20 @@ async function main() {
         )
       }
 
-      stats = {
-        ...stats,
-        packageJson: getPackageJsonDeps(packageName),
-      }
+      // check for releasedAt, if not fetch from repository
+      const releasedAt =
+        existingStats?.frameworkVersion === frameworkVersion &&
+        existingStats?.releasedAt
+          ? existingStats?.releasedAt
+          : await getReleasedAt(framework.frameworkPackage, frameworkVersion)
+
+      stats = withReleasedAt(
+        {
+          ...stats,
+          packageJson: getPackageJsonDeps(packageName),
+        },
+        releasedAt,
+      )
 
       // Save to ci-stats.json
       const ciStatsPath = join(packagesDir, packageName, 'ci-stats.json')
