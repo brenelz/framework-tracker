@@ -99,11 +99,31 @@
     "postcss-calc"
   ],
   "devServerStartTime": {
-    "avgMs": 2990,
-    "standardDeviationMs": 241.74,
-    "minMs": 2813,
-    "maxMs": 3380,
-    "samplesMs": [2836, 3380, 2849, 3072, 2813]
+    "name": "devServer",
+    "runs": 5,
+    "iterations": [
+      {
+        "timeMs": 2836
+      },
+      {
+        "timeMs": 3380
+      },
+      {
+        "timeMs": 2849
+      },
+      {
+        "timeMs": 3072
+      },
+      {
+        "timeMs": 2813
+      }
+    ],
+    "timeMs": {
+      "mean": 2990,
+      "min": 2813,
+      "max": 3380,
+      "variance": 58437.5
+    }
   },
   "firstPartyDependencies": {
     "prodDependencies": 1,

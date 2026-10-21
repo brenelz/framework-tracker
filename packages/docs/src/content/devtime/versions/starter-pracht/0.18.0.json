@@ -63,11 +63,31 @@
     }
   },
   "devServerStartTime": {
-    "avgMs": 839.2,
-    "standardDeviationMs": 32.15,
-    "minMs": 794,
-    "maxMs": 881,
-    "samplesMs": [881, 854, 794, 828, 839]
+    "name": "devServer",
+    "runs": 5,
+    "iterations": [
+      {
+        "timeMs": 881
+      },
+      {
+        "timeMs": 854
+      },
+      {
+        "timeMs": 794
+      },
+      {
+        "timeMs": 828
+      },
+      {
+        "timeMs": 839
+      }
+    ],
+    "timeMs": {
+      "mean": 839.2,
+      "min": 794,
+      "max": 881,
+      "variance": 1033.7
+    }
   },
   "vendoredCoreJsSize": 0,
   "vendoredCoreJsUnnecessaryModules": [],

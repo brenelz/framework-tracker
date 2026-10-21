@@ -93,11 +93,31 @@
     "astro"
   ],
   "devServerStartTime": {
-    "avgMs": 1426,
-    "standardDeviationMs": 147.88,
-    "minMs": 1335,
-    "maxMs": 1688,
-    "samplesMs": [1688, 1374, 1335, 1386, 1347]
+    "name": "devServer",
+    "runs": 5,
+    "iterations": [
+      {
+        "timeMs": 1688
+      },
+      {
+        "timeMs": 1374
+      },
+      {
+        "timeMs": 1335
+      },
+      {
+        "timeMs": 1386
+      },
+      {
+        "timeMs": 1347
+      }
+    ],
+    "timeMs": {
+      "mean": 1426,
+      "min": 1335,
+      "max": 1688,
+      "variance": 21867.5
+    }
   },
   "firstPartyDependencies": {
     "prodDependencies": 1,

@@ -107,11 +107,31 @@
     "react-router"
   ],
   "devServerStartTime": {
-    "avgMs": 961.8,
-    "standardDeviationMs": 19.84,
-    "minMs": 943,
-    "maxMs": 992,
-    "samplesMs": [943, 967, 992, 962, 945]
+    "name": "devServer",
+    "runs": 5,
+    "iterations": [
+      {
+        "timeMs": 943
+      },
+      {
+        "timeMs": 967
+      },
+      {
+        "timeMs": 992
+      },
+      {
+        "timeMs": 962
+      },
+      {
+        "timeMs": 945
+      }
+    ],
+    "timeMs": {
+      "mean": 961.8,
+      "min": 943,
+      "max": 992,
+      "variance": 393.69999999999993
+    }
   },
   "firstPartyDependencies": {
     "prodDependencies": 3,

@@ -93,11 +93,31 @@
   "minimumNodeVersion": "22.17.0",
   "minimumNodeVersionImposedBy": ["@sveltejs/kit"],
   "devServerStartTime": {
-    "avgMs": 1550.6,
-    "standardDeviationMs": 199.66,
-    "minMs": 1314,
-    "maxMs": 1812,
-    "samplesMs": [1812, 1314, 1509, 1688, 1430]
+    "name": "devServer",
+    "runs": 5,
+    "iterations": [
+      {
+        "timeMs": 1812
+      },
+      {
+        "timeMs": 1314
+      },
+      {
+        "timeMs": 1509
+      },
+      {
+        "timeMs": 1688
+      },
+      {
+        "timeMs": 1430
+      }
+    ],
+    "timeMs": {
+      "mean": 1550.6,
+      "min": 1314,
+      "max": 1812,
+      "variance": 39865.8
+    }
   },
   "firstPartyDependencies": {
     "prodDependencies": 0,

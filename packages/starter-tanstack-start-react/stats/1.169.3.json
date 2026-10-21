@@ -117,11 +117,31 @@
     "w3c-xmlserializer"
   ],
   "devServerStartTime": {
-    "avgMs": 1886.8,
-    "standardDeviationMs": 64.52,
-    "minMs": 1813,
-    "maxMs": 1948,
-    "samplesMs": [1937, 1948, 1914, 1813, 1822]
+    "name": "devServer",
+    "runs": 5,
+    "iterations": [
+      {
+        "timeMs": 1937
+      },
+      {
+        "timeMs": 1948
+      },
+      {
+        "timeMs": 1914
+      },
+      {
+        "timeMs": 1813
+      },
+      {
+        "timeMs": 1822
+      }
+    ],
+    "timeMs": {
+      "mean": 1886.8,
+      "min": 1813,
+      "max": 1948,
+      "variance": 4162.7
+    }
   },
   "firstPartyDependencies": {
     "prodDependencies": 7,

@@ -93,11 +93,31 @@
   "minimumNodeVersion": "24.0.0",
   "minimumNodeVersionImposedBy": ["@solidjs/start", "starter-solid-start"],
   "devServerStartTime": {
-    "avgMs": 2683.4,
-    "standardDeviationMs": 67.57,
-    "minMs": 2579,
-    "maxMs": 2768,
-    "samplesMs": [2579, 2688, 2768, 2697, 2685]
+    "name": "devServer",
+    "runs": 5,
+    "iterations": [
+      {
+        "timeMs": 2579
+      },
+      {
+        "timeMs": 2688
+      },
+      {
+        "timeMs": 2768
+      },
+      {
+        "timeMs": 2697
+      },
+      {
+        "timeMs": 2685
+      }
+    ],
+    "timeMs": {
+      "mean": 2683.4,
+      "min": 2579,
+      "max": 2768,
+      "variance": 4566.300000000001
+    }
   },
   "firstPartyDependencies": {
     "prodDependencies": 4,

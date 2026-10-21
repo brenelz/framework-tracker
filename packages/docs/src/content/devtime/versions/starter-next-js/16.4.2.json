@@ -388,11 +388,31 @@
   "minimumNodeVersion": "20.19.0",
   "minimumNodeVersionImposedBy": ["eslint-visitor-keys"],
   "devServerStartTime": {
-    "avgMs": 2543,
-    "standardDeviationMs": 102.11,
-    "minMs": 2463,
-    "maxMs": 2720,
-    "samplesMs": [2720, 2523, 2487, 2463, 2522]
+    "name": "devServer",
+    "runs": 5,
+    "iterations": [
+      {
+        "timeMs": 2720
+      },
+      {
+        "timeMs": 2523
+      },
+      {
+        "timeMs": 2487
+      },
+      {
+        "timeMs": 2463
+      },
+      {
+        "timeMs": 2522
+      }
+    ],
+    "timeMs": {
+      "mean": 2543,
+      "min": 2463,
+      "max": 2720,
+      "variance": 10426.5
+    }
   },
   "firstPartyDependencies": {
     "prodDependencies": 1,
