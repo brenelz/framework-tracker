@@ -1,9 +1,6 @@
-import type {
-  InteractionTestStats,
-  InteractionTiming,
-  RenderedTestSample,
-  RenderedTestStandardDeviation,
-} from '../types.ts'
+import type { z } from 'zod'
+import type { ClientRenderingBenchmarkSchema } from '../schemas.ts'
+import type { InteractionTiming } from '../types.ts'
 
 export interface ClientSideRenderedRunResult {
   firstPaintMs: number | null
@@ -16,12 +13,5 @@ export interface ClientSideRenderedBenchmarkResult {
   displayName: string
   package: string
   browserVersion: string
-  clientSideRenderedTests: {
-    firstPaintMs: number
-    fcpMs: number
-    interactionTests: InteractionTestStats
-    runs: number
-    standardDeviation: RenderedTestStandardDeviation
-    samples: RenderedTestSample[]
-  }
+  clientSideRenderedTests: z.infer<typeof ClientRenderingBenchmarkSchema>
 }
