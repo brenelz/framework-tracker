@@ -130,7 +130,8 @@ export const DevServerStatsSchema = z.object({
   devServerStartTime: DevServerBenchmarkSchema,
 })
 
-export const BrowserBaselineStatsSchema = z.object({
+export const BrowserBaselineStatsSchema = TestBaseSchema.extend({
+  name: z.literal('browserBaseline'),
   baselineStatus: z.union([
     z.literal('high'),
     z.literal('low'),
@@ -142,7 +143,8 @@ export const BrowserBaselineStatsSchema = z.object({
   baselineFeatureCount: z.number().nonnegative(),
 })
 
-export const NodeEnginesStatsSchema = z.object({
+export const NodeEnginesStatsSchema = TestBaseSchema.extend({
+  name: z.literal('nodeEngines'),
   minimumNodeVersion: z.string().nullable(),
   imposedBy: z.array(z.string()),
   packagesScanned: z.number().nonnegative(),
@@ -363,4 +365,33 @@ export const ClientSideRenderedStatsSchema = z.object({
 export const ServerSideRenderedStatsSchema = z.object({
   serverSideRenderedTests: ServerRenderingBenchmarkSchema,
   browserVersion: z.string().min(1),
+})
+
+export const DependencyCountsSchema = z.object({
+  prodDependencies: z.number().int().nonnegative(),
+  devDependencies: z.number().int().nonnegative(),
+  allDependencies: z.number().int().nonnegative(),
+})
+export const DependencyScanSchema = TestBaseSchema.extend(
+  DependencyCountsSchema.shape,
+).extend({
+  name: z.literal('dependencies'),
+  duplicateDependencies: z.number().int().nonnegative().optional(),
+  depInstallSize: z.number().nonnegative().optional(),
+})
+export const FrameworkDependencyScanSchema = TestBaseSchema.extend(
+  DependencyCountsSchema.shape,
+).extend({
+  name: z.literal('frameworkDependencies'),
+})
+export const FirstPartyDependencyScanSchema = TestBaseSchema.extend(
+  DependencyCountsSchema.shape,
+).extend({
+  name: z.literal('firstPartyDependencies'),
+  duplicateDependencies: z.number().int().nonnegative().optional(),
+})
+export const CoreJsStatsSchema = TestBaseSchema.extend({
+  name: z.literal('corejs'),
+  totalVendoredBytes: z.number().int().nonnegative(),
+  unnecessaryModules: z.array(z.string()),
 })
