@@ -119,7 +119,7 @@ export function withSummaryVariance(
 export function needsBenchmarkRerun(metric: MetricBase): boolean {
   return (
     // Preserve the inclusive boundary despite floating-point arithmetic (0.9 vs 1).
-    Math.abs(metric.variance?.meanPercent ?? 0) >=
+    Math.abs(metric.variance?.medianPercent ?? 0) >=
     VARIANCE_THRESHOLD_PERCENT - Number.EPSILON * 100
   )
 }

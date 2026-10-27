@@ -9,7 +9,7 @@ export class BenchmarkConsistencyError extends Error {
   constructor(changes: string[]) {
     super(
       [
-        `Same-version benchmark means changed by ${VARIANCE_THRESHOLD_PERCENT}% or more:`,
+        `Same-version benchmark medians changed by ${VARIANCE_THRESHOLD_PERCENT}% or more:`,
         ...changes,
         'Re-run the generate stats workflow. If the change persists, investigate before accepting a new baseline.',
       ].join('\n'),
@@ -27,7 +27,7 @@ export function assertBenchmarkConsistency(
       if (!test) continue
       for (const [path, metric] of metricSummaries(test.result)) {
         if (!needsBenchmarkRerun(metric)) continue
-        const percent = metric.variance!.meanPercent
+        const percent = metric.variance!.medianPercent
         const version = result.projects[test.project]?.frameworkVersion
         changes.push(
           `${result.framework}/${test.project}/${testName}${path ? `.${path}` : ''}: ${percent >= 0 ? '+' : ''}${percent.toFixed(2)}% (framework ${version} unchanged; threshold ±${VARIANCE_THRESHOLD_PERCENT}%).`,
