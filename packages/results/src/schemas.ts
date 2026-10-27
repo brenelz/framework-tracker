@@ -506,6 +506,8 @@ export const FrameworkResultSchema = z.object({
   minimumNodeVersion: z.string().optional(),
   minimumNodeVersionImposedBy: z.array(z.string()).optional(),
   testTimeMs: z.number().optional(),
+  coldBuildTimeMs: z.number().nonnegative().optional(),
+  warmBuildTimeMs: z.number().nonnegative().optional(),
   packageJson: z
     .object({
       dependencies: z.record(z.string(), z.string()).optional(),

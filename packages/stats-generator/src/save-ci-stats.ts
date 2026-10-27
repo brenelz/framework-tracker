@@ -1,5 +1,8 @@
 import {
-  FrameworkResultSchema,
+  readProjectResult,
+  saveProjectResult,
+} from '@framework-tracker/results/storage'
+import {
   DependencyScanSchema,
   CoreJsStatsSchema,
   NodeEnginesStatsSchema,
@@ -21,7 +24,6 @@ import {
 import { mergeSSRLoadArtifact } from './ssrLoad/merge.ts'
 import { join } from 'node:path'
 import { getFrameworks } from './get-frameworks.ts'
-import { packagesDir } from './constants.ts'
 import { getPublishTimes, withReleasedAt } from './release-dates.ts'
 import {
   getDependencyCountsFromPackageMetadata,
@@ -29,7 +31,6 @@ import {
   getPackageJsonDeps,
   normalizeCIStats,
   readJsonFile,
-  writeJsonFile,
 } from './utils.ts'
 import type {
   CIStats,
@@ -93,8 +94,7 @@ async function main() {
       const packageName = framework.starter.package
       console.info(`Processing ${displayName} starter (${packageName})...`)
 
-      const existingStatsPath = join(packagesDir, packageName, 'ci-stats.json')
-      const existingStats = readJsonFile<CIStats>(existingStatsPath)
+      const existingStats = readProjectResult(packageName) as CIStats | null
 
       let stats: CIStats = {
         ...(existingStats ? normalizeCIStats(existingStats) : {}),
@@ -329,25 +329,9 @@ async function main() {
         releasedAt,
       )
 
-      // Save to ci-stats.json
-      const ciStatsPath = join(packagesDir, packageName, 'ci-stats.json')
       validateSSRLoadForPersistence(stats)
       validateRequestThroughputForPersistence(stats)
-      FrameworkResultSchema.parse(stats)
-      writeJsonFile(ciStatsPath, stats)
-      console.info(`  ✓ Saved ${ciStatsPath}`)
-
-      // Save versioned stats if we have a valid version
-      if (frameworkVersion && frameworkVersion !== 'unknown') {
-        const versionedPath = join(
-          packagesDir,
-          packageName,
-          'stats',
-          `${frameworkVersion}.json`,
-        )
-        writeJsonFile(versionedPath, stats)
-        console.info(`  ✓ Saved ${versionedPath}`)
-      }
+      saveProjectResult(packageName, { ...stats })
 
       console.info('')
     }
@@ -357,8 +341,7 @@ async function main() {
       const packageName = framework.app.package
       console.info(`Processing ${displayName} app (${packageName})...`)
 
-      const existingStatsPath = join(packagesDir, packageName, 'ci-stats.json')
-      const existingStats = readJsonFile<CIStats>(existingStatsPath)
+      const existingStats = readProjectResult(packageName) as CIStats | null
 
       let stats: CIStats = {
         ...(existingStats ? normalizeCIStats(existingStats) : {}),
@@ -520,25 +503,9 @@ async function main() {
         releasedAt,
       )
 
-      // Save to ci-stats.json
-      const ciStatsPath = join(packagesDir, packageName, 'ci-stats.json')
       validateSSRLoadForPersistence(stats)
       validateRequestThroughputForPersistence(stats)
-      FrameworkResultSchema.parse(stats)
-      writeJsonFile(ciStatsPath, stats)
-      console.info(`  ✓ Saved ${ciStatsPath}`)
-
-      // Save versioned stats if we have a valid version
-      if (frameworkVersion && frameworkVersion !== 'unknown') {
-        const versionedPath = join(
-          packagesDir,
-          packageName,
-          'stats',
-          `${frameworkVersion}.json`,
-        )
-        writeJsonFile(versionedPath, stats)
-        console.info(`  ✓ Saved ${versionedPath}`)
-      }
+      saveProjectResult(packageName, { ...stats })
 
       console.info('')
     }
