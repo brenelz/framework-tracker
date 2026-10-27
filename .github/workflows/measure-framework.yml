@@ -70,7 +70,7 @@ jobs:
           node-version: '24'
 
       - name: Install stats-generator dependencies
-        run: pnpm install --frozen-lockfile --filter @framework-tracker/stats-generator
+        run: pnpm install --frozen-lockfile --filter @framework-tracker/stats-generator...
 
       - name: Run install benchmark
         run: |
@@ -242,7 +242,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install stats-generator dependencies
-        run: pnpm install --frozen-lockfile --filter @framework-tracker/stats-generator
+        run: pnpm install --frozen-lockfile --filter @framework-tracker/stats-generator...
 
       - name: Install package dependencies
         working-directory: ./packages/${{ matrix.framework.package }}
