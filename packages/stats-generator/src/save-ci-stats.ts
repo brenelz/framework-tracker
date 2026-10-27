@@ -1,22 +1,23 @@
-import { validateSSRLoadForPersistence } from './ssrLoad/persistence.ts'
 import {
+  FrameworkResultSchema,
   DependencyScanSchema,
   CoreJsStatsSchema,
   NodeEnginesStatsSchema,
   BrowserBaselineStatsSchema,
   FrameworkDependencyScanSchema,
   FirstPartyDependencyScanSchema,
-} from './schemas.ts'
+  ServerSideRenderedStatsSchema,
+  ClientSideRenderedStatsSchema,
+  BuildStatsSchema,
+  DevServerStatsSchema,
+  BaseResultSchema,
+  InstallResultSchema,
+} from '@framework-tracker/results'
+import { validateSSRLoadForPersistence } from './ssrLoad/persistence.ts'
 import {
   mergeRequestThroughputArtifact,
   validateRequestThroughputForPersistence,
 } from './request-throughput.ts'
-import {
-  ServerSideRenderedStatsSchema,
-  ClientSideRenderedStatsSchema,
-} from './schemas.ts'
-import { BuildStatsSchema, DevServerStatsSchema } from './schemas.ts'
-import { BaseResultSchema, InstallResultSchema } from './schemas.ts'
 import { mergeSSRLoadArtifact } from './ssrLoad/merge.ts'
 import { join } from 'node:path'
 import { getFrameworks } from './get-frameworks.ts'
@@ -332,6 +333,7 @@ async function main() {
       const ciStatsPath = join(packagesDir, packageName, 'ci-stats.json')
       validateSSRLoadForPersistence(stats)
       validateRequestThroughputForPersistence(stats)
+      FrameworkResultSchema.parse(stats)
       writeJsonFile(ciStatsPath, stats)
       console.info(`  ✓ Saved ${ciStatsPath}`)
 
@@ -522,6 +524,7 @@ async function main() {
       const ciStatsPath = join(packagesDir, packageName, 'ci-stats.json')
       validateSSRLoadForPersistence(stats)
       validateRequestThroughputForPersistence(stats)
+      FrameworkResultSchema.parse(stats)
       writeJsonFile(ciStatsPath, stats)
       console.info(`  ✓ Saved ${ciStatsPath}`)
 
