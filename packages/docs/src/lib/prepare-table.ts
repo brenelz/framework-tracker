@@ -111,8 +111,8 @@ export const serverSideRenderedStats = ssrRequestThroughputStats
       name: framework.name,
       package: framework.package,
       isFocused: framework.isFocused,
-      firstPaintMs: `${tests.firstPaintMs}ms`,
-      fcpMs: `${tests.fcpMs}ms`,
+      firstPaintMs: formatMilliseconds(tests.firstPaintMs),
+      fcpMs: formatMilliseconds(tests.fcpMs),
       interactionLatencyMs: formatMilliseconds(
         interaction?.interactionLatencyMs,
       ),
@@ -138,8 +138,8 @@ export const clientSideRenderedStats = ssrRequestThroughputStats
       name: framework.name,
       package: framework.package,
       isFocused: framework.isFocused,
-      firstPaintMs: `${tests.firstPaintMs}ms`,
-      fcpMs: `${tests.fcpMs}ms`,
+      firstPaintMs: formatMilliseconds(tests.firstPaintMs),
+      fcpMs: formatMilliseconds(tests.fcpMs),
       interactionLatencyMs: formatMilliseconds(
         interaction?.interactionLatencyMs,
       ),
@@ -152,7 +152,9 @@ export const clientSideRenderedStats = ssrRequestThroughputStats
   })
 
 function formatMilliseconds(value: number | undefined) {
-  return value != null && Number.isFinite(value) ? `${value}ms` : '—'
+  return value != null && Number.isFinite(value)
+    ? `${Number(value.toFixed(3))}ms`
+    : '—'
 }
 
 export const depsStats = starterStats.map((f) => ({
