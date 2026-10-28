@@ -2,6 +2,7 @@ import { existsSync, readdirSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import puppeteer from 'puppeteer-core'
 import { startFlow } from 'lighthouse'
+import { warmUpServer } from '../server-warmup.ts'
 import {
   getInteractionTimingFromLighthouse,
   getNavigationInteractionTimingFromLighthouse,
@@ -155,6 +156,11 @@ export async function runBenchmark(
     throw new Error(`Could not read Chrome version from ${chromiumPath}`)
   }
   const results: ServerSideRenderedRunResult[] = []
+
+  console.info(
+    '  Warming the server list and detail pages before measurements...',
+  )
+  await warmUpServer(`${url}${SERVER_SIDE_RENDERED_PATH}`, true)
 
   for (let i = 0; i < runs; i++) {
     console.info(`  Run ${i + 1}/${runs}...`)
