@@ -62,7 +62,7 @@ export interface ChartMeasurement {
   frameworkVersion?: string
   isFocused?: boolean
   devServerStartTime?: {
-    avgMs?: number
+    medianMs?: number
   }
   frameworkDependencies?: {
     prodDependencies?: number
@@ -79,10 +79,10 @@ export interface ChartMeasurement {
     iterations?: readonly { interactionTests?: InteractionTimings }[]
   }
   coldBuildTime?: {
-    avgMs?: number
+    medianMs?: number
   }
   warmBuildTime?: {
-    avgMs?: number
+    medianMs?: number
   }
   vendoredCoreJsSize?: number
   serverSideRenderedTests?: {
@@ -113,7 +113,7 @@ interface SSRLoadMeasurements {
 /** Install charts require a completed install benchmark. */
 export type InstallChartMeasurement = ChartMeasurement & {
   install: {
-    installTimeMs: { mean: number }
+    installTimeMs: { median: number }
     nodeModulesSizeBytes: number
   }
 }

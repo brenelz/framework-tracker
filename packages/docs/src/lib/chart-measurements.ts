@@ -68,10 +68,10 @@ export function prepareDevServerStartTimeHistory(
   records: readonly ChartMeasurement[],
 ): VersionLineChartPayload {
   return history(
-    metricCatalogue['devServerStartTime.avgMs'],
+    metricCatalogue['devServerStartTime.medianMs'],
     records.map((record) => ({
       record,
-      value: finiteValue(record.devServerStartTime?.avgMs, 1000),
+      value: finiteValue(record.devServerStartTime?.medianMs, 1000),
     })),
   )
 }
@@ -80,10 +80,10 @@ export function prepareDevServerStartTimeComparison(
   records: readonly ChartMeasurement[],
 ): PreparedComparisonChart {
   return comparison(
-    metricCatalogue['devServerStartTime.avgMs'],
+    metricCatalogue['devServerStartTime.medianMs'],
     records.map((record) => ({
       record,
-      value: finiteValue(record.devServerStartTime?.avgMs, 1000),
+      value: finiteValue(record.devServerStartTime?.medianMs, 1000),
     })),
   )
 }
@@ -318,10 +318,10 @@ export function prepareInstallTimeHistory(
   records: readonly InstallChartMeasurement[],
 ): VersionLineChartPayload {
   return history(
-    metricCatalogue['installTime.avgMs'],
+    metricCatalogue['installTime.medianMs'],
     records.map((record) => ({
       record,
-      value: finiteValue(record.install.installTimeMs.mean, 1000),
+      value: finiteValue(record.install.installTimeMs.median, 1000),
     })),
   )
 }
@@ -330,10 +330,10 @@ export function prepareInstallTimeComparison(
   records: readonly InstallChartMeasurement[],
 ): PreparedComparisonChart {
   return comparison(
-    metricCatalogue['installTime.avgMs'],
+    metricCatalogue['installTime.medianMs'],
     records.map((record) => ({
       record,
-      value: finiteValue(record.install.installTimeMs.mean, 1000),
+      value: finiteValue(record.install.installTimeMs.median, 1000),
     })),
   )
 }
@@ -342,10 +342,10 @@ export function prepareColdBuildTimeHistory(
   records: readonly ChartMeasurement[],
 ): VersionLineChartPayload {
   return history(
-    metricCatalogue['coldBuildTime.avgMs'],
+    metricCatalogue['coldBuildTime.medianMs'],
     records.map((record) => ({
       record,
-      value: finiteValue(record.coldBuildTime?.avgMs, 1000),
+      value: finiteValue(record.coldBuildTime?.medianMs, 1000),
     })),
   )
 }
@@ -354,10 +354,10 @@ export function prepareColdBuildTimeComparison(
   records: readonly ChartMeasurement[],
 ): PreparedComparisonChart {
   return comparison(
-    metricCatalogue['coldBuildTime.avgMs'],
+    metricCatalogue['coldBuildTime.medianMs'],
     records.map((record) => ({
       record,
-      value: finiteValue(record.coldBuildTime?.avgMs, 1000),
+      value: finiteValue(record.coldBuildTime?.medianMs, 1000),
     })),
   )
 }
@@ -366,10 +366,10 @@ export function prepareWarmBuildTimeHistory(
   records: readonly ChartMeasurement[],
 ): VersionLineChartPayload {
   return history(
-    metricCatalogue['warmBuildTime.avgMs'],
+    metricCatalogue['warmBuildTime.medianMs'],
     records.map((record) => ({
       record,
-      value: finiteValue(record.warmBuildTime?.avgMs, 1000),
+      value: finiteValue(record.warmBuildTime?.medianMs, 1000),
     })),
   )
 }
@@ -378,10 +378,10 @@ export function prepareWarmBuildTimeComparison(
   records: readonly ChartMeasurement[],
 ): PreparedComparisonChart {
   return comparison(
-    metricCatalogue['warmBuildTime.avgMs'],
+    metricCatalogue['warmBuildTime.medianMs'],
     records.map((record) => ({
       record,
-      value: finiteValue(record.warmBuildTime?.avgMs, 1000),
+      value: finiteValue(record.warmBuildTime?.medianMs, 1000),
     })),
   )
 }
