@@ -39,6 +39,22 @@ export interface PreparedComparisonChart extends ComparisonChartPayload {
   data: (ChartDatum & { id: string })[]
 }
 
+export type InteractionPhaseKey =
+  'inputDelayMs' | 'processingDurationMs' | 'presentationDelayMs'
+
+export type InteractionTimings = Partial<
+  Record<InteractionPhaseKey | 'interactionLatencyMs', number>
+>
+
+/** One framework version's interaction latency split into its phases. */
+export interface InteractionHistoryDatum extends Record<
+  InteractionPhaseKey | 'interactionLatencyMs',
+  number
+> {
+  id: string
+  name: string
+}
+
 /** Measurement subset accepted by chart preparation; Astro collection records fit structurally. */
 export interface ChartMeasurement {
   package?: string
@@ -60,6 +76,7 @@ export interface ChartMeasurement {
   clientSideRenderedTests?: {
     firstPaintMs?: number
     fcpMs?: number
+    iterations?: readonly { interactionTests?: InteractionTimings }[]
   }
   coldBuildTime?: {
     avgMs?: number
@@ -71,6 +88,7 @@ export interface ChartMeasurement {
   serverSideRenderedTests?: {
     firstPaintMs?: number
     fcpMs?: number
+    iterations?: readonly { interactionTests?: InteractionTimings }[]
   }
   ssrRequestThroughputTests?: {
     opsPerSec?: number
