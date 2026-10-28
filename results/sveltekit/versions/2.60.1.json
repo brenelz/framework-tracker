@@ -78,6 +78,7 @@
           }
         ],
         "timeMs": {
+          "unit": "ms",
           "mean": 1772.6,
           "median": 1763,
           "min": 1754,
@@ -108,6 +109,7 @@
           }
         ],
         "timeMs": {
+          "unit": "ms",
           "mean": 1625.6,
           "median": 1597,
           "min": 1573,
@@ -191,6 +193,7 @@
           }
         ],
         "timeMs": {
+          "unit": "ms",
           "mean": 1466,
           "median": 1476,
           "min": 1329,
@@ -230,6 +233,7 @@
           }
         ],
         "installTimeMs": {
+          "unit": "ms",
           "mean": 1449.8,
           "median": 1429,
           "min": 1303,
@@ -296,12 +300,14 @@
           }
         ],
         "firstPaintMs": {
+          "unit": "ms",
           "mean": 126.8,
           "median": 125,
           "min": 112,
           "max": 148
         },
         "fcpMs": {
+          "unit": "ms",
           "mean": 126.82939999999999,
           "median": 125.356,
           "min": 112.127,
@@ -311,24 +317,28 @@
           "scenario": "first-row-detail-navigation",
           "source": "lighthouse-inp-breakdown",
           "interactionLatencyMs": {
+            "unit": "ms",
             "mean": 15.128200000000001,
             "median": 16.801000000000002,
             "min": 11.633,
             "max": 17.738
           },
           "inputDelayMs": {
+            "unit": "ms",
             "mean": 1.2542,
             "median": 0.715,
             "min": 0.551,
             "max": 3.576
           },
           "processingDurationMs": {
+            "unit": "ms",
             "mean": 2.8768000000000002,
             "median": 2.717,
             "min": 2.469,
             "max": 3.666
           },
           "presentationDelayMs": {
+            "unit": "ms",
             "mean": 10.9972,
             "median": 10.756,
             "min": 8.007,
@@ -395,12 +405,14 @@
           }
         ],
         "firstPaintMs": {
+          "unit": "ms",
           "mean": 87.6,
           "median": 88,
           "min": 68,
           "max": 107
         },
         "fcpMs": {
+          "unit": "ms",
           "mean": 87.5222,
           "median": 87.931,
           "min": 67.534,
@@ -410,24 +422,28 @@
           "scenario": "first-row-detail-navigation",
           "source": "lighthouse-inp-breakdown",
           "interactionLatencyMs": {
+            "unit": "ms",
             "mean": 17.7618,
             "median": 18.644,
             "min": 13.081,
             "max": 21.959000000000003
           },
           "inputDelayMs": {
+            "unit": "ms",
             "mean": 1.0017999999999998,
             "median": 0.631,
             "min": 0.54,
             "max": 2.594
           },
           "processingDurationMs": {
+            "unit": "ms",
             "mean": 3.2274000000000003,
             "median": 3.333,
             "min": 2.19,
             "max": 4.175
           },
           "presentationDelayMs": {
+            "unit": "ms",
             "mean": 13.532599999999999,
             "median": 12.717,
             "min": 8.987,
@@ -755,60 +771,70 @@
         "stage1": {
           "connections": 1,
           "requests": {
+            "unit": "requests",
             "mean": 1508,
             "median": 1502,
             "min": 1501,
             "max": 1521
           },
           "errors": {
+            "unit": "errors",
             "mean": 0,
             "median": 0,
             "min": 0,
             "max": 0
           },
           "requestsPerSec": {
+            "unit": "requests/s",
             "mean": 301.59999999999997,
             "median": 300.4,
             "min": 300.2,
             "max": 304.2
           },
           "avgLatencyMs": {
+            "unit": "ms",
             "mean": 2.586666666666667,
             "median": 2.6,
             "min": 2.54,
             "max": 2.62
           },
           "p50LatencyMs": {
+            "unit": "ms",
             "mean": 2,
             "median": 2,
             "min": 2,
             "max": 2
           },
           "p75LatencyMs": {
+            "unit": "ms",
             "mean": 2,
             "median": 2,
             "min": 2,
             "max": 2
           },
           "p90LatencyMs": {
+            "unit": "ms",
             "mean": 3,
             "median": 3,
             "min": 3,
             "max": 3
           },
           "p99LatencyMs": {
+            "unit": "ms",
             "mean": 11,
             "median": 12,
             "min": 9,
             "max": 12
           },
           "maxLatencyMs": {
+            "unit": "ms",
             "mean": 14.666666666666666,
             "median": 14,
             "min": 14,
             "max": 16
           },
           "bytesPerSec": {
+            "unit": "bytes/s",
             "mean": 84049920,
             "median": 83709132.8,
             "min": 83669811.2,
@@ -818,60 +844,70 @@
         "stage2": {
           "connections": 5,
           "requests": {
+            "unit": "requests",
             "mean": 2328,
             "median": 2347,
             "min": 2264,
             "max": 2373
           },
           "errors": {
+            "unit": "errors",
             "mean": 0,
             "median": 0,
             "min": 0,
             "max": 0
           },
           "requestsPerSec": {
+            "unit": "requests/s",
             "mean": 465.6000000000001,
             "median": 469.4,
             "min": 452.8,
             "max": 474.6
           },
           "avgLatencyMs": {
+            "unit": "ms",
             "mean": 10.243333333333332,
             "median": 10.15,
             "min": 10.04,
             "max": 10.54
           },
           "p50LatencyMs": {
+            "unit": "ms",
             "mean": 9,
             "median": 9,
             "min": 9,
             "max": 9
           },
           "p75LatencyMs": {
+            "unit": "ms",
             "mean": 12.666666666666666,
             "median": 13,
             "min": 12,
             "max": 13
           },
           "p90LatencyMs": {
+            "unit": "ms",
             "mean": 15.333333333333334,
             "median": 15,
             "min": 14,
             "max": 17
           },
           "p99LatencyMs": {
+            "unit": "ms",
             "mean": 19,
             "median": 19,
             "min": 18,
             "max": 20
           },
           "maxLatencyMs": {
+            "unit": "ms",
             "mean": 21,
             "median": 21,
             "min": 20,
             "max": 22
           },
           "bytesPerSec": {
+            "unit": "bytes/s",
             "mean": 129756910.93333334,
             "median": 130829516.8,
             "min": 126202675.2,
@@ -881,60 +917,70 @@
         "stage3": {
           "connections": 10,
           "requests": {
+            "unit": "requests",
             "mean": 2331.3333333333335,
             "median": 2316,
             "min": 2288,
             "max": 2390
           },
           "errors": {
+            "unit": "errors",
             "mean": 0,
             "median": 0,
             "min": 0,
             "max": 0
           },
           "requestsPerSec": {
+            "unit": "requests/s",
             "mean": 466.2666666666667,
             "median": 463.2,
             "min": 457.6,
             "max": 478
           },
           "avgLatencyMs": {
+            "unit": "ms",
             "mean": 20.91333333333333,
             "median": 21.05,
             "min": 20.39,
             "max": 21.3
           },
           "p50LatencyMs": {
+            "unit": "ms",
             "mean": 21.666666666666668,
             "median": 22,
             "min": 21,
             "max": 22
           },
           "p75LatencyMs": {
+            "unit": "ms",
             "mean": 23.666666666666668,
             "median": 24,
             "min": 23,
             "max": 24
           },
           "p90LatencyMs": {
+            "unit": "ms",
             "mean": 26,
             "median": 26,
             "min": 26,
             "max": 26
           },
           "p99LatencyMs": {
+            "unit": "ms",
             "mean": 30.666666666666668,
             "median": 30,
             "min": 30,
             "max": 32
           },
           "maxLatencyMs": {
+            "unit": "ms",
             "mean": 55,
             "median": 44,
             "min": 41,
             "max": 80
           },
           "bytesPerSec": {
+            "unit": "bytes/s",
             "mean": 129942596.26666667,
             "median": 129086259.2,
             "min": 127526502.4,
@@ -944,60 +990,70 @@
         "stage4": {
           "connections": 25,
           "requests": {
+            "unit": "requests",
             "mean": 2299,
             "median": 2315,
             "min": 2248,
             "max": 2334
           },
           "errors": {
+            "unit": "errors",
             "mean": 0,
             "median": 0,
             "min": 0,
             "max": 0
           },
           "requestsPerSec": {
+            "unit": "requests/s",
             "mean": 459.8,
             "median": 463,
             "min": 449.6,
             "max": 466.8
           },
           "avgLatencyMs": {
+            "unit": "ms",
             "mean": 53.593333333333334,
             "median": 53.2,
             "min": 52.74,
             "max": 54.84
           },
           "p50LatencyMs": {
+            "unit": "ms",
             "mean": 52,
             "median": 52,
             "min": 51,
             "max": 53
           },
           "p75LatencyMs": {
+            "unit": "ms",
             "mean": 57.666666666666664,
             "median": 57,
             "min": 57,
             "max": 59
           },
           "p90LatencyMs": {
+            "unit": "ms",
             "mean": 64.33333333333333,
             "median": 65,
             "min": 63,
             "max": 65
           },
           "p99LatencyMs": {
+            "unit": "ms",
             "mean": 91,
             "median": 95,
             "min": 83,
             "max": 95
           },
           "maxLatencyMs": {
+            "unit": "ms",
             "mean": 325.3333333333333,
             "median": 361,
             "min": 228,
             "max": 387
           },
           "bytesPerSec": {
+            "unit": "bytes/s",
             "mean": 128133802.66666667,
             "median": 129020723.2,
             "min": 125285171.2,
@@ -1007,60 +1063,70 @@
         "stage5": {
           "connections": 50,
           "requests": {
+            "unit": "requests",
             "mean": 2210.6666666666665,
             "median": 2222,
             "min": 2168,
             "max": 2242
           },
           "errors": {
+            "unit": "errors",
             "mean": 0,
             "median": 0,
             "min": 0,
             "max": 0
           },
           "requestsPerSec": {
+            "unit": "requests/s",
             "mean": 442.1333333333334,
             "median": 444.4,
             "min": 433.6,
             "max": 448.4
           },
           "avgLatencyMs": {
+            "unit": "ms",
             "mean": 111.09666666666665,
             "median": 110.35,
             "min": 109.66,
             "max": 113.28
           },
           "p50LatencyMs": {
+            "unit": "ms",
             "mean": 103,
             "median": 102,
             "min": 101,
             "max": 106
           },
           "p75LatencyMs": {
+            "unit": "ms",
             "mean": 116.33333333333333,
             "median": 116,
             "min": 115,
             "max": 118
           },
           "p90LatencyMs": {
+            "unit": "ms",
             "mean": 143.33333333333334,
             "median": 144,
             "min": 140,
             "max": 146
           },
           "p99LatencyMs": {
+            "unit": "ms",
             "mean": 506.3333333333333,
             "median": 508,
             "min": 483,
             "max": 528
           },
           "maxLatencyMs": {
+            "unit": "ms",
             "mean": 1543.6666666666667,
             "median": 1534,
             "min": 1500,
             "max": 1597
           },
           "bytesPerSec": {
+            "unit": "bytes/s",
             "mean": 123222971.73333335,
             "median": 123856486.4,
             "min": 120854937.6,
@@ -1070,60 +1136,70 @@
         "stage6": {
           "connections": 100,
           "requests": {
+            "unit": "requests",
             "mean": 2121,
             "median": 2100,
             "min": 2086,
             "max": 2177
           },
           "errors": {
+            "unit": "errors",
             "mean": 0,
             "median": 0,
             "min": 0,
             "max": 0
           },
           "requestsPerSec": {
+            "unit": "requests/s",
             "mean": 424.2,
             "median": 420,
             "min": 417.2,
             "max": 435.4
           },
           "avgLatencyMs": {
+            "unit": "ms",
             "mean": 189.93666666666664,
             "median": 186.35,
             "min": 184.23,
             "max": 199.23
           },
           "p50LatencyMs": {
+            "unit": "ms",
             "mean": 129.33333333333334,
             "median": 123,
             "min": 122,
             "max": 143
           },
           "p75LatencyMs": {
+            "unit": "ms",
             "mean": 174,
             "median": 170,
             "min": 165,
             "max": 187
           },
           "p90LatencyMs": {
+            "unit": "ms",
             "mean": 241.33333333333334,
             "median": 240,
             "min": 229,
             "max": 255
           },
           "p99LatencyMs": {
+            "unit": "ms",
             "mean": 2551,
             "median": 2436,
             "min": 2393,
             "max": 2824
           },
           "maxLatencyMs": {
+            "unit": "ms",
             "mean": 4897,
             "median": 4863,
             "min": 4860,
             "max": 4968
           },
           "bytesPerSec": {
+            "unit": "bytes/s",
             "mean": 118229128.53333335,
             "median": 117053849.6,
             "min": 116293632,
@@ -1133,60 +1209,70 @@
         "stage7": {
           "connections": 200,
           "requests": {
+            "unit": "requests",
             "mean": 2119,
             "median": 2126,
             "min": 2075,
             "max": 2156
           },
           "errors": {
+            "unit": "errors",
             "mean": 0,
             "median": 0,
             "min": 0,
             "max": 0
           },
           "requestsPerSec": {
+            "unit": "requests/s",
             "mean": 423.8,
             "median": 425.2,
             "min": 415,
             "max": 431.2
           },
           "avgLatencyMs": {
+            "unit": "ms",
             "mean": 190.73000000000002,
             "median": 190.94,
             "min": 190.23,
             "max": 191.02
           },
           "p50LatencyMs": {
+            "unit": "ms",
             "mean": 126.66666666666667,
             "median": 127,
             "min": 124,
             "max": 129
           },
           "p75LatencyMs": {
+            "unit": "ms",
             "mean": 173.33333333333334,
             "median": 174,
             "min": 172,
             "max": 174
           },
           "p90LatencyMs": {
+            "unit": "ms",
             "mean": 234.33333333333334,
             "median": 236,
             "min": 228,
             "max": 239
           },
           "p99LatencyMs": {
+            "unit": "ms",
             "mean": 2652.6666666666665,
             "median": 2651,
             "min": 2623,
             "max": 2684
           },
           "maxLatencyMs": {
+            "unit": "ms",
             "mean": 4955.666666666667,
             "median": 4978,
             "min": 4897,
             "max": 4992
           },
           "bytesPerSec": {
+            "unit": "bytes/s",
             "mean": 118115532.8,
             "median": 118521856,
             "min": 115664486.4,

@@ -2,22 +2,46 @@ import assert from 'node:assert/strict'
 import { globSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { test } from 'node:test'
-import { FrameworkResultSchema } from '@framework-tracker/results'
+import {
+  FrameworkResultSchema,
+  MetricBaseSchema,
+} from '@framework-tracker/results'
 import {
   CombinedResultSchema,
   resultsRoot,
 } from '@framework-tracker/results/storage'
 
-test('shared final contract accepts every persisted result and history', () => {
-  const files = [
-    ...globSync(['*/latest.json', '*/versions/*.json'], { cwd: resultsRoot }),
-  ]
+function assertStoredUnits(value: unknown, path: string): void {
+  if (Array.isArray(value)) {
+    value.forEach((child, index) =>
+      assertStoredUnits(child, `${path}.${index}`),
+    )
+    return
+  }
+  if (value === null || typeof value !== 'object') return
+  const object = value as Record<string, unknown>
+  if (
+    ['mean', 'median', 'min', 'max'].every(
+      (key) => typeof object[key] === 'number',
+    )
+  ) {
+    assert.ok(
+      MetricBaseSchema.safeParse(object).success,
+      `${path}: expected an explicit metric unit in the stored JSON`,
+    )
+  }
+  for (const [key, child] of Object.entries(object))
+    assertStoredUnits(child, `${path}.${key}`)
+}
+
+test('every persisted result and history validates with explicit metric units', () => {
+  const files = [...globSync('**/*.json', { cwd: resultsRoot })]
   assert.ok(files.length > 0)
   for (const file of files) {
-    const result = CombinedResultSchema.safeParse(
-      JSON.parse(readFileSync(join(resultsRoot, file), 'utf8')),
-    )
+    const stored = JSON.parse(readFileSync(join(resultsRoot, file), 'utf8'))
+    const result = CombinedResultSchema.safeParse(stored)
     assert.ok(result.success, `${file}: ${result.error?.message}`)
+    assertStoredUnits(stored, file)
   }
 })
 
