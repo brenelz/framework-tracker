@@ -1,15 +1,32 @@
 import { selectRepresentativeIteration } from './selection.ts'
 import { z } from 'zod'
 
-export const MetricVarianceSchema = z.object({
-  comparedToMeasuredAt: z.string().nullable(),
-  meanPercent: z.number(),
-  medianPercent: z.number(),
-  minPercent: z.number(),
-  maxPercent: z.number(),
+const MetricChangeSchema = z.object({
+  /** Defaults to zero when the previous value is zero. */
+  percentChange: z.number(),
+  /** Signed difference in the metric's unit: current minus previous. */
+  valueChange: z.number(),
 })
 
+export const MetricVarianceSchema = z.object({
+  comparedToMeasuredAt: z.string().nullable(),
+  mean: MetricChangeSchema,
+  median: MetricChangeSchema,
+  min: MetricChangeSchema,
+  max: MetricChangeSchema,
+})
+
+export const MetricUnitSchema = z.enum([
+  'ms',
+  'ops/s',
+  'requests',
+  'errors',
+  'requests/s',
+  'bytes/s',
+])
+
 export const MetricBaseSchema = z.object({
+  unit: MetricUnitSchema,
   mean: z.number(),
   median: z.number(),
   min: z.number(),
@@ -17,6 +34,14 @@ export const MetricBaseSchema = z.object({
   variance: MetricVarianceSchema.optional(),
 })
 export type MetricBase = z.infer<typeof MetricBaseSchema>
+
+// Each test defines its metric units; defaults also support historical summaries.
+function metricWithUnit<T extends z.infer<typeof MetricUnitSchema>>(unit: T) {
+  return MetricBaseSchema.extend({ unit: z.literal(unit).default(unit) })
+}
+
+const MillisecondsMetricSchema = metricWithUnit('ms')
+const OperationsPerSecondMetricSchema = metricWithUnit('ops/s')
 
 export const FrameworkSchema = z.enum([
   'baseline-html',
@@ -87,7 +112,7 @@ export const InstallBenchmarkSchema = createBenchmarkBaseSchema(
   InstallIterationSchema,
 ).safeExtend({
   name: z.literal('install'),
-  installTimeMs: MetricBaseSchema,
+  installTimeMs: MillisecondsMetricSchema,
   nodeModulesSizeBytes: z.number().nonnegative(),
 })
 
@@ -104,7 +129,7 @@ export const BuildBenchmarkSchema = createBenchmarkBaseSchema(
   BuildIterationSchema,
 ).safeExtend({
   name: z.enum(['coldBuild', 'warmBuild']),
-  timeMs: MetricBaseSchema,
+  timeMs: MillisecondsMetricSchema,
 })
 export const BuildStatsSchema = z.object({
   coldBuildTime: BuildBenchmarkSchema.safeExtend({
@@ -123,7 +148,7 @@ export const DevServerBenchmarkSchema = createBenchmarkBaseSchema(
   DevServerIterationSchema,
 ).safeExtend({
   name: z.literal('devServer'),
-  timeMs: MetricBaseSchema,
+  timeMs: MillisecondsMetricSchema,
 })
 
 export const DevServerStatsSchema = z.object({
@@ -162,8 +187,8 @@ export const LegacySSRRequestThroughputSchema = z.object({
 })
 
 export const RequestThroughputIterationSchema = z.object({
-  opsPerSec: MetricBaseSchema,
-  latencyMs: MetricBaseSchema,
+  opsPerSec: OperationsPerSecondMetricSchema,
+  latencyMs: MillisecondsMetricSchema,
   samples: z.number().int().positive(),
 })
 export const RequestThroughputBenchmarkSchema = createBenchmarkBaseSchema(
@@ -171,8 +196,8 @@ export const RequestThroughputBenchmarkSchema = createBenchmarkBaseSchema(
 )
   .safeExtend({
     name: z.literal('ssrRequestThroughput'),
-    opsPerSec: MetricBaseSchema,
-    latencyMs: MetricBaseSchema,
+    opsPerSec: OperationsPerSecondMetricSchema,
+    latencyMs: MillisecondsMetricSchema,
     samples: z.number().int().positive(),
     bodySizeKb: z.number().positive(),
     duplicationFactor: z.number().nonnegative(),
@@ -232,16 +257,16 @@ export const SSRLoadSweepSchema = z.array(SSRLoadStageSchema).nonempty()
 
 export const SSRLoadStageSummarySchema = z.object({
   connections: z.number().int().positive(),
-  requests: MetricBaseSchema,
-  errors: MetricBaseSchema,
-  requestsPerSec: MetricBaseSchema,
-  avgLatencyMs: MetricBaseSchema,
-  p50LatencyMs: MetricBaseSchema,
-  p75LatencyMs: MetricBaseSchema,
-  p90LatencyMs: MetricBaseSchema,
-  p99LatencyMs: MetricBaseSchema,
-  maxLatencyMs: MetricBaseSchema,
-  bytesPerSec: MetricBaseSchema,
+  requests: metricWithUnit('requests'),
+  errors: metricWithUnit('errors'),
+  requestsPerSec: metricWithUnit('requests/s'),
+  avgLatencyMs: MillisecondsMetricSchema,
+  p50LatencyMs: MillisecondsMetricSchema,
+  p75LatencyMs: MillisecondsMetricSchema,
+  p90LatencyMs: MillisecondsMetricSchema,
+  p99LatencyMs: MillisecondsMetricSchema,
+  maxLatencyMs: MillisecondsMetricSchema,
+  bytesPerSec: metricWithUnit('bytes/s'),
 })
 
 export const SSRLoadTestsSchema = createBenchmarkBaseSchema(SSRLoadSweepSchema)
@@ -391,15 +416,15 @@ export const ClientRenderingBenchmarkSchema = createBenchmarkBaseSchema(
   ClientRenderingIterationSchema,
 ).safeExtend({
   name: z.literal('clientSideRendered'),
-  firstPaintMs: MetricBaseSchema,
-  fcpMs: MetricBaseSchema,
+  firstPaintMs: MillisecondsMetricSchema,
+  fcpMs: MillisecondsMetricSchema,
   interactionTests: z.object({
     scenario: z.literal('first-row-detail-navigation'),
     source: z.literal('lighthouse-inp-breakdown'),
-    interactionLatencyMs: MetricBaseSchema,
-    inputDelayMs: MetricBaseSchema,
-    processingDurationMs: MetricBaseSchema,
-    presentationDelayMs: MetricBaseSchema,
+    interactionLatencyMs: MillisecondsMetricSchema,
+    inputDelayMs: MillisecondsMetricSchema,
+    processingDurationMs: MillisecondsMetricSchema,
+    presentationDelayMs: MillisecondsMetricSchema,
   }),
 })
 
@@ -408,15 +433,15 @@ export const ServerRenderingBenchmarkSchema = createBenchmarkBaseSchema(
   ServerRenderingIterationSchema,
 ).safeExtend({
   name: z.literal('serverSideRendered'),
-  firstPaintMs: MetricBaseSchema,
-  fcpMs: MetricBaseSchema,
+  firstPaintMs: MillisecondsMetricSchema,
+  fcpMs: MillisecondsMetricSchema,
   interactionTests: z.object({
     scenario: z.literal('first-row-detail-navigation'),
     source: z.literal('lighthouse-inp-breakdown'),
-    interactionLatencyMs: MetricBaseSchema,
-    inputDelayMs: MetricBaseSchema,
-    processingDurationMs: MetricBaseSchema,
-    presentationDelayMs: MetricBaseSchema,
+    interactionLatencyMs: MillisecondsMetricSchema,
+    inputDelayMs: MillisecondsMetricSchema,
+    processingDurationMs: MillisecondsMetricSchema,
+    presentationDelayMs: MillisecondsMetricSchema,
   }),
 })
 

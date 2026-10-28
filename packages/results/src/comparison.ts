@@ -1,5 +1,4 @@
 import { isDeepStrictEqual } from 'node:util'
-import { VARIANCE_THRESHOLD_PERCENT } from './measurements.ts'
 import {
   MetricBaseSchema,
   type FrameworkResult,
@@ -10,6 +9,13 @@ function percentageChange(current: number, previous: number): number {
   if (previous === 0) return 0
   const change = ((current - previous) / previous) * 100
   return Number.isFinite(change) ? change : 0
+}
+
+function metricChange(current: number, previous: number) {
+  return {
+    percentChange: percentageChange(current, previous),
+    valueChange: current - previous,
+  }
 }
 
 function record(value: unknown): Record<string, unknown> | undefined {
@@ -88,38 +94,22 @@ export function withSummaryVariance(
       const comparable =
         sameVersion &&
         baseline &&
+        summary.unit === baseline.unit &&
         current.runner === previous?.runner &&
         (!browserTest || current.browserVersion === previous?.browserVersion) &&
         isDeepStrictEqual(
           benchmarkConfiguration(value),
           benchmarkConfiguration(oldValue),
         )
+      if (!comparable) continue
       summary.variance = {
-        comparedToMeasuredAt: comparable
-          ? (previous?.timingMeasuredAt ?? null)
-          : null,
-        meanPercent: comparable
-          ? percentageChange(summary.mean, baseline.mean)
-          : 0,
-        medianPercent: comparable
-          ? percentageChange(summary.median, baseline.median)
-          : 0,
-        minPercent: comparable
-          ? percentageChange(summary.min, baseline.min)
-          : 0,
-        maxPercent: comparable
-          ? percentageChange(summary.max, baseline.max)
-          : 0,
+        comparedToMeasuredAt: previous?.timingMeasuredAt ?? null,
+        mean: metricChange(summary.mean, baseline.mean),
+        median: metricChange(summary.median, baseline.median),
+        min: metricChange(summary.min, baseline.min),
+        max: metricChange(summary.max, baseline.max),
       }
     }
   }
   return result
-}
-
-export function needsBenchmarkRerun(metric: MetricBase): boolean {
-  return (
-    // Preserve the inclusive boundary despite floating-point arithmetic (0.9 vs 1).
-    Math.abs(metric.variance?.medianPercent ?? 0) >=
-    VARIANCE_THRESHOLD_PERCENT - Number.EPSILON * 100
-  )
 }

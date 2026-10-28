@@ -226,6 +226,11 @@ test('repeated load sweeps select the median peak sweep without mixing metrics',
     ]),
   )
   const result = summarizeLoadSweeps(samples)
+  assert.equal(result.stage1.requests.unit, 'requests')
+  assert.equal(result.stage1.errors.unit, 'errors')
+  assert.equal(result.stage1.requestsPerSec.unit, 'requests/s')
+  assert.equal(result.stage1.bytesPerSec.unit, 'bytes/s')
+  assert.equal(result.stage1.p99LatencyMs.unit, 'ms')
   assert.equal(result.representativeIterationIndex, 2)
   const peak = getLoadPeakStage(
     result.iterations[result.representativeIterationIndex]!,

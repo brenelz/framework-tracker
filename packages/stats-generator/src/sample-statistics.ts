@@ -39,7 +39,9 @@ export function standardDeviation(
   return summarizeSamples(samples, decimalPlaces).standardDeviationMs
 }
 
-export function summarizeMetric(values: number[]): MetricBase {
+export function summarizeMetric(
+  values: number[],
+): Pick<MetricBase, 'mean' | 'median' | 'min' | 'max'> {
   if (values.length === 0)
     throw new Error('Cannot summarize an empty sample set')
   const mean = values.reduce((sum, value) => sum + value, 0) / values.length
