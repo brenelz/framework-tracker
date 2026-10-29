@@ -16,23 +16,27 @@ function formatTime(
     samplesMs: value.iterations.map((run) => run.timeMs),
   }
 }
-function formatRendered(
+export function formatRendered(
   value: NonNullable<
     | FrameworkResult['clientSideRenderedTests']
     | FrameworkResult['serverSideRenderedTests']
   >,
 ) {
   if (!('name' in value)) return value
+  // Per-phase medians do not add up to the median total, so the phases come
+  // from the run whose total is the median.
+  const medianRun = [...value.iterations].sort(
+    (a, b) =>
+      a.interactionTests.interactionLatencyMs -
+      b.interactionTests.interactionLatencyMs,
+  )[Math.floor(value.iterations.length / 2)]!
   return {
     ...value,
     firstPaintMs: value.firstPaintMs.median,
     fcpMs: value.fcpMs.median,
     interactionTests: {
       ...value.interactionTests,
-      interactionLatencyMs: value.interactionTests.interactionLatencyMs.median,
-      inputDelayMs: value.interactionTests.inputDelayMs.median,
-      processingDurationMs: value.interactionTests.processingDurationMs.median,
-      presentationDelayMs: value.interactionTests.presentationDelayMs.median,
+      ...medianRun.interactionTests,
     },
   }
 }

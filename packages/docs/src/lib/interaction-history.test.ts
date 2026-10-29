@@ -1,95 +1,105 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
+import type { FrameworkResult } from '@framework-tracker/results'
 import {
   prepareLighthouseClientSideRenderedTestsInteractionHistory,
   prepareLighthouseServerSideRenderedTestsInteractionHistory,
 } from './chart-measurements.ts'
+import { formatRendered } from './result-content.ts'
 
-const run = (
+const timings = (
   inputDelayMs: number,
   processingDurationMs: number,
   presentationDelayMs: number,
 ) => ({
-  interactionTests: {
-    inputDelayMs,
-    processingDurationMs,
-    presentationDelayMs,
-    interactionLatencyMs:
-      inputDelayMs + processingDurationMs + presentationDelayMs,
-  },
+  inputDelayMs,
+  processingDurationMs,
+  presentationDelayMs,
+  interactionLatencyMs:
+    inputDelayMs + processingDurationMs + presentationDelayMs,
+})
+const metric = (value: number) => ({
+  mean: value,
+  median: value,
+  min: value,
+  max: value,
 })
 
-const runs = [
-  run(1, 30, 9),
-  run(2, 10, 3),
-  run(1, 20, 9),
-  run(5, 40, 20),
-  run(3, 12, 10),
-]
-
-test('uses the run with the median total so the phases add up to it', () => {
-  const [row] = prepareLighthouseClientSideRenderedTestsInteractionHistory([
-    {
-      package: 'app-next',
-      frameworkVersion: '14.0.0',
-      clientSideRenderedTests: { iterations: runs },
+test('rendered tests take interaction phases from the run with the median total', () => {
+  const runs = [
+    timings(1, 30, 9),
+    timings(2, 10, 3),
+    timings(1, 20, 9),
+    timings(5, 40, 20),
+    timings(3, 12, 10),
+  ]
+  const formatted = formatRendered({
+    name: 'clientSideRendered',
+    runs: runs.length,
+    iterations: runs.map((interactionTests) => ({
+      firstPaintMs: 100,
+      fcpMs: 100,
+      interactionTests,
+    })),
+    firstPaintMs: metric(100),
+    fcpMs: metric(100),
+    interactionTests: {
+      scenario: 'first-row-detail-navigation',
+      source: 'lighthouse-inp-breakdown',
+      interactionLatencyMs: metric(30),
+      inputDelayMs: metric(2),
+      processingDurationMs: metric(20),
+      presentationDelayMs: metric(9),
     },
-  ])
-  assert.deepEqual(row, {
-    id: 'app-next:14.0.0',
-    name: 'v14.0.0',
-    inputDelayMs: 1,
-    processingDurationMs: 20,
-    presentationDelayMs: 9,
-    interactionLatencyMs: 30,
+  } as NonNullable<FrameworkResult['clientSideRenderedTests']>)
+
+  assert.deepEqual(formatted.interactionTests, {
+    scenario: 'first-row-detail-navigation',
+    source: 'lighthouse-inp-breakdown',
+    ...timings(1, 20, 9),
   })
 })
 
-test('skips versions without complete runs and keeps input order', () => {
+test('history keeps versions with complete interaction data, in input order', () => {
   const records = [
     {
+      package: 'app-next',
       frameworkVersion: '14.0.0',
-      clientSideRenderedTests: { iterations: [run(1, 2, 3)] },
+      clientSideRenderedTests: { interactionTests: timings(1, 2, 3) },
     },
     { frameworkVersion: '15.0.0', clientSideRenderedTests: {} },
     {
       frameworkVersion: '16.0.0',
       clientSideRenderedTests: {
-        iterations: [
-          {
-            interactionTests: {
-              ...run(1, 2, 3).interactionTests,
-              inputDelayMs: Number.NaN,
-            },
-          },
-        ],
+        interactionTests: { ...timings(1, 2, 3), inputDelayMs: Number.NaN },
       },
     },
     {
       frameworkVersion: '17.0.0',
-      clientSideRenderedTests: { iterations: [run(4, 5, 6)] },
+      clientSideRenderedTests: { interactionTests: timings(4, 5, 6) },
     },
   ]
   assert.deepEqual(
-    prepareLighthouseClientSideRenderedTestsInteractionHistory(records).map(
-      (row) => row.name,
-    ),
-    ['v14.0.0', 'v17.0.0'],
+    prepareLighthouseClientSideRenderedTestsInteractionHistory(records),
+    [
+      { id: 'app-next:14.0.0', name: 'v14.0.0', ...timings(1, 2, 3) },
+      { id: 'unknown:17.0.0', name: 'v17.0.0', ...timings(4, 5, 6) },
+    ],
   )
 })
 
-test('server history reads the server runs', () => {
+test('server history reads the server measurements', () => {
   const [row] = prepareLighthouseServerSideRenderedTestsInteractionHistory([
     {
       frameworkVersion: '14.0.0',
-      clientSideRenderedTests: { iterations: [run(1, 1, 1)] },
-      serverSideRenderedTests: { iterations: [run(7, 8, 9)] },
+      clientSideRenderedTests: { interactionTests: timings(1, 1, 1) },
+      serverSideRenderedTests: { interactionTests: timings(7, 8, 9) },
     },
   ])
   assert.equal(row?.interactionLatencyMs, 24)
 })
 
-test('history is empty when no version has runs', () => {
+test('history is empty when no version has interaction data', () => {
   assert.deepEqual(
     prepareLighthouseClientSideRenderedTestsInteractionHistory([
       { package: 'app-pracht', frameworkVersion: '1.0.0' },

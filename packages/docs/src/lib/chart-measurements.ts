@@ -270,25 +270,13 @@ function hasInteractionTimings(
   )
 }
 
-// Per-phase medians do not add up to the median total, so the stack uses the
-// run with the median total and its own phases.
-function medianRun(
-  iterations: readonly { interactionTests?: InteractionTimings }[] | undefined,
-) {
-  const runs = (iterations ?? [])
-    .map((run) => run.interactionTests)
-    .filter(hasInteractionTimings)
-    .sort((a, b) => a.interactionLatencyMs - b.interactionLatencyMs)
-  return runs[Math.floor(runs.length / 2)]
-}
-
 function interactionHistory(
   records: readonly ChartMeasurement[],
   testsKey: 'clientSideRenderedTests' | 'serverSideRenderedTests',
 ): InteractionHistoryDatum[] {
   return records.flatMap((record) => {
-    const timings = medianRun(record[testsKey]?.iterations)
-    if (timings == null) return []
+    const timings = record[testsKey]?.interactionTests
+    if (!hasInteractionTimings(timings)) return []
 
     const version = record.frameworkVersion ?? 'Unknown'
     return {
