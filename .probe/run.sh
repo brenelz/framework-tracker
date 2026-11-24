@@ -12,12 +12,15 @@ variant() { # label dir
   for i in $(seq 1 40); do docker run --rm --network $NET $IMG node -e "fetch('http://srv:3003/server-side-rendered').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))" >/dev/null 2>&1 && break; sleep 0.5; done
   ac $AC -c 10 -d 10 -H "Accept: text/html" http://srv:3003/server-side-rendered >/dev/null 2>&1
   docker kill -s USR2 srv >/dev/null
-  ac $AC -j -c 10 -d 20 -H "Accept: text/html" http://srv:3003/server-side-rendered 2>/dev/null > $OUT/ac.json
+  ac $AC -j -c 10 -d 20 -H "Accept: text/html" http://srv:3003/server-side-rendered 2>>$OUT/ac-stderr.log > $OUT/ac.json
   docker kill -s TERM srv >/dev/null; sleep 2
+  docker logs srv > $OUT/srv-$label-$ROUND.log 2>&1
   local probe=$(docker logs srv 2>&1 | grep '^PROBE ' | cut -c7-)
   node -e 'const a=JSON.parse(require("fs").readFileSync(process.argv[3]));console.log(JSON.stringify({round:+process.argv[2],label:process.argv[1],rps:a.requests.average,p50:a.latency.p50,p99:a.latency.p99,err:a.errors+a.non2xx,...JSON.parse(process.argv[4]||"{}")}))' "$label" "$ROUND" $OUT/ac.json "$probe" | tee -a $OUT/results.jsonl
   docker rm -f srv >/dev/null
 }
+ls -la packages/stats-generator/node_modules/autocannon || true
+ac $AC --version || echo "autocannon failed to start"
 V=(base pr748 off)
 for ROUND in 1 2 3 4 5 6; do
   for i in 0 1 2; do v=${V[$(( (i + ROUND) % 3 ))]}; variant $v packages/app-solid-$v; done
