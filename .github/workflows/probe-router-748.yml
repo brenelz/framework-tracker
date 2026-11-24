@@ -1,0 +1,34 @@
+name: Probe router 748 SSR load
+on:
+  push:
+    branches: [probe/router-748]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: pnpm/action-setup@8912a9102ac27614460f54aedde9e1e7f9aec20d
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version-file: '.nvmrc'
+      - run: nproc; lscpu | head -15; docker --version
+      - run: pnpm install --frozen-lockfile --filter @framework-tracker/stats-generator...
+      - name: Build app-solid against each router tarball
+        run: |
+          for v in base pr748 off; do
+            cp -r packages/app-solid packages/app-solid-$v
+            cd packages/app-solid-$v
+            node -e 'const f="package.json",p=require("./"+f);p.dependencies["@solidjs/router"]="file:../../.probe/router-'$v'.tgz";require("fs").writeFileSync(f,JSON.stringify(p,null,2)+"\n")'
+            sed -i "s|'@solidjs/router@2.0.0'|'@solidjs/router@2.0.1'|" pnpm-workspace.yaml
+            CI=true pnpm install --no-frozen-lockfile
+            pnpm build
+            echo "$v: $(grep -c 'plainHrefMisses' dist/server/server.js) early-exit marks, $(grep -c 'attrs !== 0' dist/server/server.js) off marks"
+            cd ../..
+          done
+      - run: bash .probe/run.sh
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: probe
+          path: .probe/out
