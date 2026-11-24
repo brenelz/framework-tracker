@@ -13,7 +13,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - run: nproc; lscpu | head -15; docker --version
-      - run: pnpm install --frozen-lockfile --filter @framework-tracker/stats-generator...
+      - run: npm install --prefix .probe/ac --no-save --no-package-lock autocannon@8.0.0
       - name: Build app-solid against each router tarball
         run: |
           for v in base pr748 off; do
